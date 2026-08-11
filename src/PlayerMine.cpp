@@ -12,17 +12,16 @@
 
 #include "bzfsAPI.h"
 
-#include <cmath>
 #include <numbers>
 
-auto PlayerMine::is_within_range(std::span<const float, 3> pos, float range) const -> bool
+auto PlayerMine::is_within_range(std::span<const float, 3> pos) const -> bool
 {
-   auto is_in_range = [range](float mine_pos, float player_pos)
-   { return std::abs(mine_pos - player_pos) < range; };
+   auto dx = position_[0] - pos[0];
+   auto dy = position_[1] - pos[1];
+   auto dz = position_[2] - pos[2];
 
-   return (
-      is_in_range(position_[0], pos[0]) && is_in_range(position_[1], pos[1]) &&
-      is_in_range(position_[2], pos[2]));
+   auto norm_squared = [](auto... args) { return ((args * args) + ...); };
+   return (norm_squared(dx, dy, dz) < range_squared_);
 }
 
 auto PlayerMine::fire_shot(std::string_view shot_type, float dx, float dy, float dz) const -> void

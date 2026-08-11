@@ -23,7 +23,7 @@ class PlayerMine
    /**
     * @brief Metadata to identify shots generated from the mine.
     */
-   inline static constexpr auto PLAYER_ID_META_DATA = std::string_view{"PlayerMine_ShotId"};
+   inline static constexpr auto PLAYER_ID_META_DATA = std::string_view{"PlayerMine_Id"};
 
    /**
     * @brief Constructs a @c PlayerMine object.
@@ -32,7 +32,7 @@ class PlayerMine
     * @param pos The position of the mine in 3D Cartesian coordinates.
     */
    PlayerMine(PlayerId player, std::span<const float, 3> pos)
-       : player_id_{player}, position_{pos[0], pos[1], pos[2]}
+       : PlayerMine{player, pos[0], pos[1], pos[2]}
    {
    }
 
@@ -47,6 +47,8 @@ class PlayerMine
    PlayerMine(PlayerId player, float x, float y, float z) noexcept
        : player_id_{player}, position_{x, y, z}
    {
+      auto r = static_cast<float>(bz_getBZDBDouble("_shockOutRadius") * 0.9);
+      range_squared_ = r * r;
    }
 
    /**
@@ -76,7 +78,7 @@ class PlayerMine
     * @param position The position of another player.
     * @param range The detection distance for triggering the mine.
     */
-   auto is_within_range(std::span<const float, 3> position, float range) const -> bool;
+   auto is_within_range(std::span<const float, 3> position) const -> bool;
 
    /**
     * @brief Checks if a mine can be triggered by a player based on team gameplay rules.
@@ -101,4 +103,5 @@ class PlayerMine
 
    PlayerId player_id_;
    std::array<float, 3> position_;
+   float range_squared_;
 };

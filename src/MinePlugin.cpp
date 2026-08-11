@@ -110,13 +110,12 @@ auto MinePlugin::handle_player_update_event(bz_PlayerUpdateEventData_V1* event_d
       return;
    }
 
-   auto range = static_cast<float>(bz_getBZDBDouble("_shockOutRadius") * 0.9);
    auto explodable_mine = std::ranges::find_if(
       mines_,
       [&](auto const& mine)
       {
          return mine.can_detonate_for(event_data->playerID) &&
-                mine.is_within_range(event_data->state.pos, range);
+                mine.is_within_range(event_data->state.pos);
       });
 
    if (explodable_mine != std::ranges::end(mines_))

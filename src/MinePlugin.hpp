@@ -145,5 +145,6 @@ class MinePlugin final : public bz_Plugin, public bz_CustomSlashCommandHandlerV2
    // - very few elements (normal usage, under 5 elements)
    // - vector has better cache-locality than all other containers
    std::vector<PlayerMine> mines_;
+   // Not used yet.
    std::flat_map<PlayerId, PlayerInfo> player_info_;
 };
