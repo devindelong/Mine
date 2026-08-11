@@ -1,0 +1,104 @@
+/**
+ * @copyright Copyright (c) 2026, Devin DeLong. All rights reserved.
+ *
+ * @license This code is distributed under the BSD 3-Clause License.
+ *          See the LICENSE file for the full text of the license.
+ *
+ * @author Devin DeLong
+ */
+
+#pragma once
+
+#include "utility.hpp"
+
+#include "bzfsAPI.h"
+
+#include <array>
+#include <span>
+#include <string_view>
+
+class PlayerMine
+{
+ public:
+   /**
+    * @brief Metadata to identify shots generated from the mine.
+    */
+   inline static constexpr auto PLAYER_ID_META_DATA = std::string_view{"PlayerMine_ShotId"};
+
+   /**
+    * @brief Constructs a @c PlayerMine object.
+    *
+    * @param player The ID of the player that owns the mine.
+    * @param pos The position of the mine in 3D Cartesian coordinates.
+    */
+   PlayerMine(PlayerId player, std::span<const float, 3> pos)
+       : player_id_{player}, position_{pos[0], pos[1], pos[2]}
+   {
+   }
+
+   /**
+    * @brief Constructs a @c PlayerMine object.
+    *
+    * @param player The ID of the player that owns the mine.
+    * @param x The x coordinate.
+    * @param y The y coordinate.
+    * @param z The z coordinate.
+    */
+   PlayerMine(PlayerId player, float x, float y, float z) noexcept
+       : player_id_{player}, position_{x, y, z}
+   {
+   }
+
+   /**
+    * @brief Gets the ID of the player that owns the mine.
+    *
+    * @return The player's ID.
+    */
+   auto player_id() const noexcept -> PlayerId { return player_id_; }
+
+   /**
+    * @brief Gets the position of the mine.
+    *
+    * @return The position in 3D Cartesian coordinates.
+    */
+   auto position() const noexcept -> std::array<float, 3> const& { return position_; }
+
+   /**
+    * @brief Gets the team of the player that owns the mine.
+    *
+    * @return The mine owner's team.
+    */
+   auto player_team() const -> bz_eTeamType { return bz_getPlayerTeam(player_id_); }
+
+   /**
+    * @brief Checks if a player's position is within detonation range.
+    *
+    * @param position The position of another player.
+    * @param range The detection distance for triggering the mine.
+    */
+   auto is_within_range(std::span<const float, 3> position, float range) const -> bool;
+
+   /**
+    * @brief Checks if a mine can be triggered by a player based on team gameplay rules.
+    */
+   auto can_detonate_for(PlayerId other_player_id) const -> bool;
+
+   /**
+    * @brief Detonates the mine.
+    */
+   auto detonate() -> void;
+
+ private:
+   /**
+    * @brief Helper function to fire the shot and handle shot metadata.
+    *
+    * @param shotType The flag abbreviation for the type of shot used.
+    * @param dx The x-direction to fire the shot.
+    * @param dy The y-direction to fire the shot.
+    * @param dz The z-direction to fire the shot.
+    */
+   void fire_shot(std::string_view shot_type, float dx, float dy, float dz) const;
+
+   PlayerId player_id_;
+   std::array<float, 3> position_;
+};
