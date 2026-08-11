@@ -112,12 +112,6 @@ class MinePlugin final : public bz_Plugin, public bz_CustomSlashCommandHandlerV2
 
    /**
     * @brief Callback that handles the
-    * @param spawnData Pointer to the event data @c bz_PlayerSpawnEventData_V1.
-    */
-   auto handle_player_spawned_event(bz_PlayerSpawnEventData_V1* event_data) -> void;
-
-   /**
-    * @brief Callback that handles the
     * @param updateData Pointer to the event data @c bz_PlayerUpdateEventData_V1.
     */
    auto handle_player_update_event(bz_PlayerUpdateEventData_V1* event_data) -> void;

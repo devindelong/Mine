@@ -22,11 +22,9 @@ void MinePlugin::Init([[maybe_unused]] const char* commandLine)
    Register(bz_eFlagGrabbedEvent);
    Register(bz_ePlayerDieEvent);
    Register(bz_ePlayerPartEvent);
-   Register(bz_ePlayerSpawnEvent);
    Register(bz_ePlayerUpdateEvent);
 
    bz::register_custom_slash_command(MINE_COMMAND, this);
-   // bz_registerCustomBZDBInt(bzdb_safetyTime, 5);
 
    // Register custom flags.
    bz::register_custom_flag(MINE_FLAG_ABBR, MINE_FLAG_NAME, MINE_FLAG_DESC, 0, eGoodFlag);
@@ -42,8 +40,6 @@ auto MinePlugin::Event(bz_EventData* event_data) -> void
       return handle_player_die_event(static_cast<bz_PlayerDieEventData_V1*>(event_data));
    case bz_ePlayerPartEvent:
       return handle_player_part_event(static_cast<bz_PlayerJoinPartEventData_V1*>(event_data));
-   case bz_ePlayerSpawnEvent:
-      return handle_player_spawned_event(static_cast<bz_PlayerSpawnEventData_V1*>(event_data));
    case bz_ePlayerUpdateEvent:
       return handle_player_update_event(static_cast<bz_PlayerUpdateEventData_V1*>(event_data));
    default:
@@ -96,11 +92,6 @@ auto MinePlugin::handle_player_die_event(bz_PlayerDieEventData_V1* event_data) -
 auto MinePlugin::handle_player_part_event(bz_PlayerJoinPartEventData_V1* event_data) -> void
 {
    remove_mines_for_player(event_data->playerID);
-}
-
-auto MinePlugin::handle_player_spawned_event(bz_PlayerSpawnEventData_V1* event_data) -> void
-{
-   // TODO: spawn delay timeout.
 }
 
 auto MinePlugin::handle_player_update_event(bz_PlayerUpdateEventData_V1* event_data) -> void
@@ -178,6 +169,4 @@ auto MinePlugin::Cleanup() -> void
    Flush();
 
    bz::remove_custom_slash_command(MINE_COMMAND);
-
-   // bz_removeCustomBZDBVariable(bzdb_safetyTime);
 }
