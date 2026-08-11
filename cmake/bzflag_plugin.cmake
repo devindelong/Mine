@@ -22,32 +22,6 @@ endif()
 set (BZFLAG_INCLUDE_PATH "${BZFLAG_PROJECT_ROOT}/include")
 
 # ------------------------------------------------------------------------------
-# Need to build plugin_utils inside bzflag.
-# ------------------------------------------------------------------------------
-
-set (BZFLAG_PLUGIN_UTILS_LIBRARY "bzflag_plugin_utils")
-set (BZFLAG_PLUGIN_UTILS_PATH "${BZFLAG_PROJECT_ROOT}/plugins/plugin_utils")
-
-set (BZFLAG_PLUGIN_UTILS_SOURCES
-   ${BZFLAG_PLUGIN_UTILS_PATH}/plugin_config.cpp
-   ${BZFLAG_PLUGIN_UTILS_PATH}/plugin_files.cpp
-   ${BZFLAG_PLUGIN_UTILS_PATH}/plugin_groups.cpp
-   ${BZFLAG_PLUGIN_UTILS_PATH}/plugin_utils.cpp
-)
-
-add_library (
-   ${BZFLAG_PLUGIN_UTILS_LIBRARY}
-   ${BZFLAG_PLUGIN_UTILS_SOURCES}
-)
-
-target_include_directories (
-   ${BZFLAG_PLUGIN_UTILS_LIBRARY}
-   PUBLIC
-      ${BZFLAG_INCLUDE_PATH}
-      ${BZFLAG_PLUGIN_UTILS_PATH}
-)
-
-# ------------------------------------------------------------------------------
 # Add an add_plugin() cmake function.
 # ------------------------------------------------------------------------------
 
@@ -77,26 +51,11 @@ function (add_bzflag_plugin TARGET)
    endif()
 
    add_library (${TARGET} MODULE ${ARGS_SOURCES})
-
-   target_compile_options (
-      ${TARGET}
-      PRIVATE
-         ${BZFLAG_PLUGIN_WARNING_FLAGS}
-   )
-
-   target_include_directories (
-      ${TARGET}
-      PRIVATE
-         ${BZFLAG_INCLUDE_PATH}
-         ${BZFLAG_PLUGIN_UTILS_PATH}
-   )
+   target_compile_options (${TARGET} PRIVATE ${BZFLAG_PLUGIN_WARNING_FLAGS})
+   target_include_directories (${TARGET} PRIVATE ${BZFLAG_INCLUDE_PATH} )
 
    # Strips the "lib" prefix (libplugin_name.so -> plugin_name.so)
-   set_target_properties(
-      ${TARGET}
-      PROPERTIES
-         PREFIX ""
-   )
+   set_target_properties(${TARGET} PROPERTIES  PREFIX "")
 
    if (ARGS_INCLUDE_PATHS)
       target_include_directories (${TARGET} PRIVATE ${ARGS_INCLUDE_PATHS})
