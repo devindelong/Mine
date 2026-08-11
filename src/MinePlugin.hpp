@@ -14,16 +14,9 @@
 
 #include "bzfsAPI.h"
 
-#include <flat_map>
 #include <span>
 #include <string_view>
 #include <vector>
-
-struct PlayerInfo
-{
-   std::string name;
-   std::array<float, 3> last_pos;
-};
 
 /**
  * @brief Plug-in class.
@@ -139,6 +132,4 @@ class MinePlugin final : public bz_Plugin, public bz_CustomSlashCommandHandlerV2
    // - very few elements (normal usage, under 5 elements)
    // - vector has better cache-locality than all other containers
    std::vector<PlayerMine> mines_;
-   // Not used yet.
-   std::flat_map<PlayerId, PlayerInfo> player_info_;
 };
