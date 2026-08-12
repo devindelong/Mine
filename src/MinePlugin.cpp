@@ -147,12 +147,6 @@ auto MinePlugin::SlashCommand(
       return true;
    }
 
-   if (player_record->team == eObservers)
-   {
-      bz::send_message(BZ_SERVER, player_id, "Observers can't place mines!");
-      return true;
-   }
-
    if (player_record->currentFlag.c_str() != MINE_FLAG_LONG_NAME)
    {
       bz::send_message(
