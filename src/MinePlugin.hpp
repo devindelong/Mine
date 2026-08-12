@@ -117,14 +117,14 @@ class MinePlugin final : public bz_Plugin, public bz_CustomSlashCommandHandlerV2
     * @brief Removes all mines for a given player.
     * @param player_id The ID for the player.
     */
-   void remove_mines_for_player(PlayerId player_id);
+   auto remove_mines_for_player(PlayerId player_id) -> void;
 
    /**
     * @brief Adds a mine.
     * @param player_id The ID for the player.
     * @param pos The location of the mine.
     */
-   void add_player_mine(PlayerId player_id, std::span<const float, 3> pos);
+   auto add_player_mine(PlayerId player_id, std::span<const float, 3> pos) -> void;
 
    // Using a vector because
    // - insertion/removal is rare

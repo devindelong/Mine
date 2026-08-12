@@ -56,21 +56,21 @@ class PlayerMine
     *
     * @return The player's ID.
     */
-   auto player_id() const noexcept -> PlayerId { return player_id_; }
+   [[nodiscard]] auto player_id() const noexcept -> PlayerId { return player_id_; }
 
    /**
     * @brief Gets the position of the mine.
     *
     * @return The position in 3D Cartesian coordinates.
     */
-   auto position() const noexcept -> std::array<float, 3> const& { return position_; }
+   [[nodiscard]] auto position() const noexcept -> std::array<float, 3> const& { return position_; }
 
    /**
     * @brief Gets the team of the player that owns the mine.
     *
     * @return The mine owner's team.
     */
-   auto player_team() const -> bz_eTeamType { return bz_getPlayerTeam(player_id_); }
+   [[nodiscard]] auto player_team() const -> bz_eTeamType { return bz_getPlayerTeam(player_id_); }
 
    /**
     * @brief Checks if a player's position is within detonation range.
@@ -78,12 +78,12 @@ class PlayerMine
     * @param position The position of another player.
     * @param range The detection distance for triggering the mine.
     */
-   auto is_within_range(std::span<const float, 3> position) const -> bool;
+   [[nodiscard]] auto is_within_range(std::span<const float, 3> position) const -> bool;
 
    /**
     * @brief Checks if a mine can be triggered by a player based on team gameplay rules.
     */
-   auto can_detonate_for(PlayerId other_player_id) const -> bool;
+   [[nodiscard]] auto can_detonate_for(PlayerId other_player_id) const -> bool;
 
    /**
     * @brief Detonates the mine.
@@ -99,7 +99,7 @@ class PlayerMine
     * @param dy The y-direction to fire the shot.
     * @param dz The z-direction to fire the shot.
     */
-   void fire_shot(std::string_view shot_type, float dx, float dy, float dz) const;
+   auto fire_shot(std::string_view shot_type, float dx, float dy, float dz) const -> void;
 
    PlayerId player_id_;
    std::array<float, 3> position_;

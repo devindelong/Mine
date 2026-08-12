@@ -100,7 +100,7 @@ auto fire_server_shot(
  * @brief Gets a player record (smart pointer wrapper).
  * @param index The index/ID of the player
  */
-auto player_record_from_id(PlayerId index) -> UniquePtr<bz_BasePlayerRecord>;
+[[nodiscard]] auto player_record_from_id(PlayerId index) -> UniquePtr<bz_BasePlayerRecord>;
 
 /**
  * @brief A more modern wrapper around @c bz_removeCustomSlashCommand.
