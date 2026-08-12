@@ -91,9 +91,9 @@ class PlayerMine
 
  private:
    /**
-    * @brief Helper function to fire the shot and handle shot metadata.
+    * @brief Fire the shot and handle shot metadata.
     *
-    * @param shotType The flag abbreviation for the type of shot used.
+    * @param shot_type The flag abbreviation for the type of shot used.
     * @param dx The x-direction to fire the shot.
     * @param dy The y-direction to fire the shot.
     * @param dz The z-direction to fire the shot.
