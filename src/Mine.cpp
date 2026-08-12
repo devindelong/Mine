@@ -9,4 +9,6 @@
 
 #include "MinePlugin.hpp"
 
+#include "bzfsAPI.h"
+
 BZ_PLUGIN(MinePlugin);
