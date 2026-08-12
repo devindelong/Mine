@@ -1,10 +1,7 @@
 # ==============================================================================
 #
-# Copyright (c) 2026 Devin DeLong
 # SPDX-License-Identifier: BSD-3-clause
-#
-# Licensed under the BSD 3-Clause License.
-# See the license file in the project root for full license information.
+# SPDX-FileCopyrightText: 2026 Devin DeLong
 #
 # ==============================================================================
 
@@ -22,7 +19,7 @@ endif()
 set (BZFLAG_INCLUDE_PATH "${BZFLAG_PROJECT_ROOT}/include")
 
 # ------------------------------------------------------------------------------
-# Add an add_plugin() cmake function.
+# Function add_plugin().
 # ------------------------------------------------------------------------------
 
 # Encourage better code with more warnings.

@@ -24,6 +24,17 @@ using ShotId = std::uint32_t;
 namespace bz
 {
 
+/**
+ * @brief Sends a message from one player to another.
+ *
+ * This is basically a a variadic wrapper around @c bz_sendTextMessage that uses @c std::format
+ * formatting.
+ *
+ * @param from The message sender.
+ * @param to The message receiver.
+ * @param fmt Format string.
+ * @param args Arguments to the format string.
+ */
 template <typename To, typename... Args>
 auto send_message(PlayerId from, To to, std::format_string<Args...> fmt, Args&&... args)
    requires std::integral<To> || std::same_as<To, bz_eTeamType>
@@ -32,6 +43,17 @@ auto send_message(PlayerId from, To to, std::format_string<Args...> fmt, Args&&.
    bz_sendTextMessage(from, to, message.c_str());
 }
 
+/**
+ * @brief Sends a debug message to the console.
+ *
+ * This is basically A variadic wrapper around @c bz_debugMessage that uses @c std::format
+ * formatting.
+ *
+ * @param level The debug level (0-4?)
+ * @param fmt Format string.
+ * @param args Arguments to the format string.
+ *
+ */
 template <typename... Args>
 auto debug(int level, std::format_string<Args...> fmt, Args&&... args)
 {
@@ -39,6 +61,9 @@ auto debug(int level, std::format_string<Args...> fmt, Args&&... args)
    bz_debugMessage(level, message.c_str());
 }
 
+/**
+ * @brief Deleter for @c std::unique_ptr.
+ */
 struct Deleter
 {
    auto operator()(bz_BasePlayerRecord* ptr) const -> void { bz_freePlayerRecord(ptr); }
@@ -51,6 +76,9 @@ struct Deleter
    auto operator()(auto* ptr) const -> void { delete ptr; }
 };
 
+/**
+ * @brief Alias for @c std::unique_ptr with an appropriate deleter.
+ */
 template <typename T>
 using UniquePtr = std::unique_ptr<T, Deleter>;
 
@@ -68,11 +96,21 @@ auto fire_server_shot(
    std::span<const float, 3> direction,
    PlayerId player) -> ShotId;
 
+/**
+ * @brief Gets a player record (smart pointer wrapper).
+ * @param index The index/ID of the player
+ */
 auto player_record_from_id(PlayerId index) -> UniquePtr<bz_BasePlayerRecord>;
 
+/**
+ * @brief A more modern wrapper around @c bz_removeCustomSlashCommand.
+ */
 auto register_custom_slash_command(
    std::string_view command, bz_CustomSlashCommandHandlerV2* handler) -> bool;
 
+/**
+ * @brief A more modern wrapper around @c bz_RegisterCustomFlag.
+ */
 auto register_custom_flag(
    std::string_view abbr,
    std::string_view name,
@@ -80,6 +118,9 @@ auto register_custom_flag(
    bz_eShotType shotType,
    bz_eFlagQuality quality) -> bool;
 
+/**
+ * @brief A more modern wrapper around @c bz_RegisterCustomFlag.
+ */
 auto remove_custom_slash_command(std::string_view command) -> bool;
 
 } // namespace bz
