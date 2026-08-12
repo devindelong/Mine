@@ -28,19 +28,4 @@ set (MINE_PLUGIN_CXX_VERSION cxx_std_23)
 # Plugin name
 set (MINE_PLUGIN ${MINE_PLUGIN_LIBRARY_NAME})
 
-set (MINE_PLUGIN_WARNING_FLAGS
-    -Wall # enables most common warnings (misleadingly not "all")
-    -Wextra # the next tier that -Wall misses
-    -Wpedantic # strict ISO conformance, catches non-standard extensions
-    -Wconversion # implicit narrowing conversions, catches int → float etc.
-    -Wshadow # local variable shadows outer scope variable
-    -Wnon-virtual-dtor # class with virtual functions but non-virtual destructor
-    -Wold-style-cast # C-style casts, encourages static_cast etc.
-    -Wcast-align # casting pointer to a type with stricter alignment
-    -Woverloaded-virtual # derived class hides base class virtual method
-    -Wnull-dereference # detectable null dereference paths
-)
-
-set (MINE_PLUGIN_LINK_FLAGS -undefined dynamic_lookup)
-
 add_subdirectory (${MINE_PLUGIN_SOURCE_PATH})
