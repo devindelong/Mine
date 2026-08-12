@@ -44,8 +44,7 @@ class PlayerMine
     * @param y The y coordinate.
     * @param z The z coordinate.
     */
-   PlayerMine(PlayerId player, float x, float y, float z) noexcept
-       : player_id_{player}, position_{x, y, z}
+   PlayerMine(PlayerId player, float x, float y, float z) : player_id_{player}, position_{x, y, z}
    {
       auto r = static_cast<float>(bz_getBZDBDouble("_shockOutRadius") * 0.9);
       range_squared_ = r * r;
