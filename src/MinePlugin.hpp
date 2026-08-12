@@ -73,7 +73,7 @@ class MinePlugin final : public bz_Plugin, public bz_CustomSlashCommandHandlerV2
     *
     * @return Returns true if the command was valid, false otherwise.
     */
-   virtual auto SlashCommand(
+   auto SlashCommand(
       PlayerId player_id,
       int source_channel,
       bz_ApiString command,
