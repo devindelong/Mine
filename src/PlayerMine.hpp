@@ -29,22 +29,10 @@ class PlayerMine
     * @brief Constructs a @c PlayerMine object.
     *
     * @param player The ID of the player that owns the mine.
-    * @param pos The position of the mine in 3D Cartesian coordinates.
+    * @param state The player update state.
     */
-   PlayerMine(PlayerId player, std::span<const float, 3> pos)
-       : PlayerMine{player, pos[0], pos[1], pos[2]}
-   {
-   }
-
-   /**
-    * @brief Constructs a @c PlayerMine object.
-    *
-    * @param player The ID of the player that owns the mine.
-    * @param x The x coordinate.
-    * @param y The y coordinate.
-    * @param z The z coordinate.
-    */
-   PlayerMine(PlayerId player, float x, float y, float z) : player_id_{player}, position_{x, y, z}
+   PlayerMine(PlayerId player, bz_PlayerUpdateState const& state)
+       : player_id_{player}, position_{std::to_array(state.pos)}, rotation_{state.rotation}
    {
       auto r = static_cast<float>(bz_getBZDBDouble("_shockOutRadius") * 0.9);
       range_squared_ = r * r;
@@ -102,5 +90,6 @@ class PlayerMine
 
    PlayerId player_id_;
    std::array<float, 3> position_;
+   float rotation_;
    float range_squared_;
 };

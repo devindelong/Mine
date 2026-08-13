@@ -12,7 +12,9 @@
 
 #include "bzfsAPI.h"
 
+#include <cmath>
 #include <numbers>
+#include <ranges>
 
 auto PlayerMine::is_within_range(std::span<const float, 3> pos) const -> bool
 {
@@ -49,25 +51,16 @@ auto PlayerMine::detonate() -> void
    static constexpr auto sqrt2_over_2 = std::numbers::sqrt2_v<float> / 2.0f;
    static constexpr auto elevations = std::array{-sqrt2_over_2, 0.0f, sqrt2_over_2};
 
-   // Fire shock wave sphere.
    fire_shot("SW", 0.0f, 0.0f, 0.0f);
-
-   // Up
    fire_shot("F", 0.0f, 0.0f, 1.0f);
-
-   // Down
    fire_shot("F", 0.0f, 0.0f, -1.0f);
 
    for (const auto zcoord : elevations)
    {
-      // xy-plane, every pi/4
-      fire_shot("F", 1.0f, 0.0f, zcoord);
-      fire_shot("F", 0.0f, 1.0f, zcoord);
-      fire_shot("F", -1.0f, 0.0f, zcoord);
-      fire_shot("F", 0.0f, -1.0f, zcoord);
-      fire_shot("F", sqrt2_over_2, sqrt2_over_2, zcoord);
-      fire_shot("F", -sqrt2_over_2, sqrt2_over_2, zcoord);
-      fire_shot("F", -sqrt2_over_2, -sqrt2_over_2, zcoord);
-      fire_shot("F", sqrt2_over_2, -sqrt2_over_2, zcoord);
+      for (const auto i : std::views::iota(0, 8))
+      {
+         auto angle = rotation_ + static_cast<float>(i) * std::numbers::pi_v<float> / 4.0f;
+         fire_shot("F", std::cos(angle), std::sin(angle), zcoord);
+      }
    }
 }

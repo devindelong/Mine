@@ -122,9 +122,9 @@ auto MinePlugin::remove_mines_for_player(PlayerId player_id) -> void
       mines_, [player_id](PlayerMine const& mine) { return mine.player_id() == player_id; });
 }
 
-auto MinePlugin::add_player_mine(PlayerId player_id, std::span<const float, 3> pos) -> void
+auto MinePlugin::add_player_mine(PlayerId player_id, bz_PlayerUpdateState const& state) -> void
 {
-   mines_.emplace_back(player_id, pos);
+   mines_.emplace_back(player_id, state);
    bz_removePlayerFlag(player_id);
    bz::send_message(BZ_SERVER, player_id, "The mine has been set!");
 }
@@ -154,7 +154,7 @@ auto MinePlugin::SlashCommand(
       return true;
    }
 
-   add_player_mine(player_id, player_record->lastKnownState.pos);
+   add_player_mine(player_id, player_record->lastKnownState);
    return true;
 }
 

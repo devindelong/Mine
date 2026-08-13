@@ -124,7 +124,7 @@ class MinePlugin final : public bz_Plugin, public bz_CustomSlashCommandHandlerV2
     * @param player_id The ID for the player.
     * @param pos The location of the mine.
     */
-   auto add_player_mine(PlayerId player_id, std::span<const float, 3> pos) -> void;
+   auto add_player_mine(PlayerId player_id, bz_PlayerUpdateState const& state) -> void;
 
    // Using a vector because
    // - insertion/removal is rare
