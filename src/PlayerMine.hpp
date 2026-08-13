@@ -36,6 +36,10 @@ class PlayerMine
    {
       auto r = static_cast<float>(bz_getBZDBDouble("_shockOutRadius") * 0.9);
       range_squared_ = r * r;
+
+      // Update the z-coord because it's the bottom of the tank.
+      auto tank_height = static_cast<float>(bz_getBZDBDouble("_tankHeight"));
+      position_[2] += tank_height / 2.0f;
    }
 
    /**
