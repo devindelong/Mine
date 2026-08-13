@@ -19,8 +19,18 @@
 // https://www.tauday.com/tau-manifesto
 template <typename T>
 inline constexpr auto tao_v = std::numbers::pi_v<T> * 2;
-
 inline constexpr auto tao = tao_v<double>;
+
+PlayerMine::PlayerMine(PlayerId player, bz_PlayerUpdateState const& state)
+    : player_id_{player}, position_{std::to_array(state.pos)}, rotation_{state.rotation}
+{
+   auto r = static_cast<float>(bz_getBZDBDouble("_shockOutRadius") * 0.9);
+   range_squared_ = r * r;
+
+   // Update the z-coord because it's the bottom of the tank.
+   auto tank_height = static_cast<float>(bz_getBZDBDouble("_tankHeight"));
+   position_[2] += tank_height / 2.0f;
+}
 
 auto PlayerMine::is_within_range(std::span<const float, 3> pos) const -> bool
 {

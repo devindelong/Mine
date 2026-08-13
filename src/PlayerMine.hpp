@@ -31,16 +31,7 @@ class PlayerMine
     * @param player The ID of the player that owns the mine.
     * @param state The player update state.
     */
-   PlayerMine(PlayerId player, bz_PlayerUpdateState const& state)
-       : player_id_{player}, position_{std::to_array(state.pos)}, rotation_{state.rotation}
-   {
-      auto r = static_cast<float>(bz_getBZDBDouble("_shockOutRadius") * 0.9);
-      range_squared_ = r * r;
-
-      // Update the z-coord because it's the bottom of the tank.
-      auto tank_height = static_cast<float>(bz_getBZDBDouble("_tankHeight"));
-      position_[2] += tank_height / 2.0f;
-   }
+   PlayerMine(PlayerId player, bz_PlayerUpdateState const& state);
 
    /**
     * @brief Gets the ID of the player that owns the mine.
