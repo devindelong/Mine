@@ -16,6 +16,12 @@
 #include <numbers>
 #include <ranges>
 
+// https://www.tauday.com/tau-manifesto
+template <typename T>
+inline constexpr auto tao_v = std::numbers::pi_v<T> * 2;
+
+inline constexpr auto tao = tao_v<double>;
+
 auto PlayerMine::is_within_range(std::span<const float, 3> pos) const -> bool
 {
    auto dx = position_[0] - pos[0];
@@ -50,6 +56,7 @@ auto PlayerMine::detonate() -> void
 {
    static constexpr auto sqrt2_over_2 = std::numbers::sqrt2_v<float> / 2.0f;
    static constexpr auto elevations = std::array{-sqrt2_over_2, 0.0f, sqrt2_over_2};
+   static constexpr auto num_angles = 8;
 
    fire_shot("SW", 0.0f, 0.0f, 0.0f);
    fire_shot("F", 0.0f, 0.0f, 1.0f);
@@ -57,9 +64,9 @@ auto PlayerMine::detonate() -> void
 
    for (const auto zcoord : elevations)
    {
-      for (const auto i : std::views::iota(0, 8))
+      for (const auto i : std::views::iota(0, num_angles))
       {
-         auto angle = rotation_ + static_cast<float>(i) * std::numbers::pi_v<float> / 4.0f;
+         auto angle = rotation_ + static_cast<float>(i) * tao_v<float> / num_angles;
          fire_shot("F", std::cos(angle), std::sin(angle), zcoord);
       }
    }

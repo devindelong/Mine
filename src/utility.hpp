@@ -21,6 +21,7 @@
 using PlayerId = int;
 using ShotId = std::uint32_t;
 
+
 namespace bz
 {
 
