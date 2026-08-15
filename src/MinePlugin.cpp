@@ -105,8 +105,8 @@ auto MinePlugin::handle_player_update_event(bz_PlayerUpdateEventData_V1* event_d
       mines_,
       [&](auto const& mine)
       {
-         return mine.can_detonate_for(event_data->playerID) &&
-                mine.is_within_range(event_data->state.pos);
+         return mine.is_within_range(event_data->state.pos) &&
+                mine.can_detonate_for(event_data->playerID);
       });
 
    if (explodable_mine != std::ranges::end(mines_))
